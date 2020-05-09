@@ -8,6 +8,7 @@ public class Fractal : MonoBehaviour
     public Material material;
 
     public int maxDepth;
+    public float childScale;
     private int depth;
 
     private void Start()
@@ -26,6 +27,9 @@ public class Fractal : MonoBehaviour
         material = parent.material;
         maxDepth = parent.maxDepth;
         depth = parent.depth + 1;
+        childScale = parent.childScale;
         transform.parent = parent.transform;
+        transform.localScale = Vector3.one * childScale;
+        transform.localPosition = Vector3.up * (0.5f + 0.5f * childScale);
     }
 }
