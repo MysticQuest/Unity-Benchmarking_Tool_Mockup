@@ -10,5 +10,6 @@ public enum GraphFunctionName
     MultiSine2D,
     Ripple,
     Cylinder,
-    Sphere
+    Sphere,
+    Torus
 }
