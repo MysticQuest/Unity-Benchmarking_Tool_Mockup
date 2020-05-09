@@ -1,7 +1,7 @@
 ﻿Shader "Custom/ColoredPoint" {
     Properties {
-        //		_Color ("Color", Color) = (1,1,1,1)
-        //		_MainTex ("Albedo (RGB)", 2D) = "white" {}
+        // _Color ("Color", Color) = (1,1,1,1)
+        // _MainTex ("Albedo (RGB)", 2D) = "white" {}
         _Glossiness ("Smoothness", Range(0,1)) = 0.5
         _Metallic ("Metallic", Range(0,1)) = 0.0
     }
@@ -14,7 +14,7 @@
 
         #pragma target 3.0
 
-        //		sampler2D _MainTex;
+        sampler2D _MainTex;
 
         struct Input {
             float3 worldPos;
@@ -30,8 +30,8 @@
         void surf (Input IN, inout SurfaceOutputStandard o) {
             //			fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
             //			o.Albedo = c.rgb;
-            o.Albedo.r = IN.worldPos.x * 0.5 + 0.5;
-            o.Albedo.rg = IN.worldPos.xy * 0.5 + 0.5;
+            // o.Albedo.r = IN.worldPos.x * 0.5 + 0.5;
+            o.Albedo.rg = IN.worldPos.xy* 0.5 + 0.5;
             o.Metallic = _Metallic;
             o.Smoothness = _Glossiness;
             //			o.Alpha = c.a;
