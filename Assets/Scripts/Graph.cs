@@ -11,7 +11,8 @@ public class Graph : MonoBehaviour
     public int resolution = 10;
 
     static GraphFunction[] functions = {
-        SineFunction, Sine2DFunction, MultiSineFunction
+        SineFunction, MultiSineFunction, Sine2DFunction, MultiSine2DFunction,
+        Ripple
     };
 
     [SerializeField] private Transform pointPrefab;
@@ -74,6 +75,23 @@ public class Graph : MonoBehaviour
         float y = Mathf.Sin(pi * (x + t));
         y += Mathf.Sin(pi * (z + t));
         y *= 0.5f;
+        return y;
+    }
+
+    static float MultiSine2DFunction(float x, float z, float t)
+    {
+        float y = 4f * Mathf.Sin(pi * (x + z + t * 0.5f));
+        y += Mathf.Sin(pi * (x + t));
+        y += Mathf.Sin(2f * pi * (z + 2f * t)) * 0.5f;
+        y *= 1f / 5.5f;
+        return y;
+    }
+
+    static float Ripple(float x, float z, float t)
+    {
+        float d = Mathf.Sqrt(x * x + z * z);
+        float y = Mathf.Sin(pi * (4f * d - t));
+        y /= 1f + 10f * d;
         return y;
     }
 
