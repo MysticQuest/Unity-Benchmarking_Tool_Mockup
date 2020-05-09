@@ -31,7 +31,7 @@
             //			fixed4 c = tex2D (_MainTex, IN.uv_MainTex) * _Color;
             //			o.Albedo = c.rgb;
             // o.Albedo.r = IN.worldPos.x * 0.5 + 0.5;
-            o.Albedo.rg = IN.worldPos.xy* 0.5 + 0.5;
+            o.Albedo.rgb = IN.worldPos.xyz * 0.5 + 0.5;
             o.Metallic = _Metallic;
             o.Smoothness = _Glossiness;
             //			o.Alpha = c.a;

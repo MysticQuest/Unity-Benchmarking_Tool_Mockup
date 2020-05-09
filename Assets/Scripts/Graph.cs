@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+#pragma warning disable 0649
+
 public class Graph : MonoBehaviour
 {
     public GraphFunctionName function;
@@ -9,10 +11,11 @@ public class Graph : MonoBehaviour
     public int resolution = 10;
 
     static GraphFunction[] functions = {
-        SineFunction, MultiSineFunction
+        SineFunction, Sine2DFunction, MultiSineFunction
     };
 
     [SerializeField] private Transform pointPrefab;
+
     Transform[] points;
 
     void Awake()
@@ -21,16 +24,20 @@ public class Graph : MonoBehaviour
         Vector3 scale = Vector3.one * step;
         Vector3 position;
         position.z = 0f;
-        points = new Transform[resolution];
-        for (int i = 0; i < points.Length; i++)
+        position.y = 0f;
+        points = new Transform[resolution * resolution];
+        for (int i = 0, z = 0; z < resolution; z++)
         {
-            Transform point = Instantiate(pointPrefab);
-            position.x = (i + 0.5f) * step - 1f;
-            position.y = 0;
-            point.localPosition = position;
-            point.localScale = scale;
-            point.SetParent(transform, false);
-            points[i] = point;
+            for (int x = 0; x < resolution; x++, i++)
+            {
+                Transform point = Instantiate(pointPrefab);
+                position.x = (x + 0.5f) * step - 1f;
+                position.z = (z + 0.5f) * step - 1f;
+                point.localPosition = position;
+                point.localScale = scale;
+                point.SetParent(transform, false);
+                points[i] = point;
+            }
         }
     }
 
@@ -42,21 +49,31 @@ public class Graph : MonoBehaviour
         {
             Transform point = points[i];
             Vector3 position = point.localPosition;
-            position.y = runFunc(position.x, t);
+            position.y = runFunc(position.x, position.z, t);
             point.localPosition = position;
         }
     }
 
-    static float SineFunction(float x, float t)
+    const float pi = Mathf.PI;
+
+    static float SineFunction(float x, float z, float t)
     {
-        return Mathf.Sin(Mathf.PI * (x + t));
+        return Mathf.Sin(pi * (x + t));
     }
 
-    static float MultiSineFunction(float x, float t)
+    static float MultiSineFunction(float x, float z, float t)
     {
-        float y = Mathf.Sin(Mathf.PI * (x + t));
-        y += Mathf.Sin(2f * Mathf.PI * (x + 2f * t)) / 2f;
+        float y = Mathf.Sin(pi * (x + t));
+        y += Mathf.Sin(2f * pi * (x + 2f * t)) * .5f;
         y *= 2f / 3f;
+        return y;
+    }
+
+    static float Sine2DFunction(float x, float z, float t)
+    {
+        float y = Mathf.Sin(pi * (x + t));
+        y += Mathf.Sin(pi * (z + t));
+        y *= 0.5f;
         return y;
     }
 
