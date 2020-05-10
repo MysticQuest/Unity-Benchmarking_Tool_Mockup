@@ -1388,7 +1388,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Is this fractal a mockery?
+  m_Text: Increase depth (not recommended)
 --- !u!222 &1114286526
 CanvasRenderer:
   m_ObjectHideFlags: 0
