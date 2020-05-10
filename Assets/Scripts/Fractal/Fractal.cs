@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class Fractal : MonoBehaviour
 {
-    public Mesh mesh;
+    public Mesh[] meshes;
     public Material material;
 
     public int maxDepth;
     private int depth;
     public float childScale;
+    public float spawnProbability;
+    public float maxRotationSpeed;
+    private float rotationSpeed;
 
     private Material[,] materials;
 
@@ -33,16 +36,22 @@ public class Fractal : MonoBehaviour
 
     private void Start()
     {
+        rotationSpeed = Random.Range(-maxRotationSpeed, maxRotationSpeed);
         if (materials == null)
         {
             InitializeMaterials();
         }
-        gameObject.AddComponent<MeshFilter>().mesh = mesh;
+        gameObject.AddComponent<MeshFilter>().mesh = meshes[Random.Range(0, meshes.Length)];
         gameObject.AddComponent<MeshRenderer>().material = materials[depth, Random.Range(0, 2)];
         if (depth < maxDepth)
         {
             StartCoroutine(CreateChildren());
         }
+    }
+
+    private void Update()
+    {
+        transform.Rotate(0f, rotationSpeed * Time.deltaTime, 0f);
     }
 
     private IEnumerator CreateChildren()
@@ -51,9 +60,11 @@ public class Fractal : MonoBehaviour
         {
             for (int i = 0; i < childDirections.Length; i++)
             {
-                yield return new WaitForSeconds(Random.Range(0.1f, 0.5f));
-                new GameObject("Fractal Child").AddComponent<Fractal>().
-                    Initialize(this, i);
+                if (Random.value < spawnProbability)
+                {
+                    yield return new WaitForSeconds(Random.Range(0.1f, 0.5f));
+                    new GameObject("Fractal Child").AddComponent<Fractal>().Initialize(this, i);
+                }
             }
         }
         // else  //root downwards
@@ -75,9 +86,9 @@ public class Fractal : MonoBehaviour
             float t = i / (maxDepth - 1f);
             t *= t;
             materials[i, 0] = new Material(material);
-            materials[i, 0].color = Color.Lerp(Color.white, Color.yellow, t);
+            materials[i, 0].color = Color.Lerp(Color.white, Color.green, t);
             materials[i, 1] = new Material(material);
-            materials[i, 1].color = Color.Lerp(Color.white, Color.cyan, t);
+            materials[i, 1].color = Color.Lerp(Color.white, Color.blue, t);
         }
         materials[maxDepth, 0].color = Color.magenta;
         materials[maxDepth, 1].color = Color.red;
@@ -85,7 +96,9 @@ public class Fractal : MonoBehaviour
 
     private void Initialize(Fractal parent, int childIndex)
     {
-        mesh = parent.mesh;
+        maxRotationSpeed = parent.maxRotationSpeed;
+        spawnProbability = parent.spawnProbability;
+        meshes = parent.meshes;
         materials = parent.materials;
         maxDepth = parent.maxDepth;
         depth = parent.depth + 1;
