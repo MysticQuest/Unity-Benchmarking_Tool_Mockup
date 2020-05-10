@@ -236,6 +236,7 @@ MonoBehaviour:
   mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
   material: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   maxDepth: 4
+  childScale: 0.5
 --- !u!4 &1655284773
 Transform:
   m_ObjectHideFlags: 0
@@ -285,7 +286,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
