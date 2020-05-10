@@ -139,4 +139,15 @@ public class Graph : MonoBehaviour
         return p;
     }
 
+    public void ButtonChangeGraph()
+    {
+        if ((int)function < functions.Length - 1)
+        {
+            function += 1;
+        }
+        else
+        {
+            function = 0;
+        }
+    }
 }
