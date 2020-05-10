@@ -8,7 +8,7 @@ public class Graph : MonoBehaviour
 {
     public GraphFunctionName function;
     [Range(10, 100)]
-    public int resolution = 10;
+    public int resolution = 100;
 
     static GraphFunction[] functions = {
         SineFunction, MultiSineFunction, Sine2DFunction, MultiSine2DFunction,
@@ -20,6 +20,11 @@ public class Graph : MonoBehaviour
     Transform[] points;
 
     void Awake()
+    {
+        SetupCubes();
+    }
+
+    private void SetupCubes()
     {
         float step = 2f / resolution;
         Vector3 scale = Vector3.one * step;
@@ -149,5 +154,16 @@ public class Graph : MonoBehaviour
         {
             function = 0;
         }
+    }
+
+    public void Increase()
+    {
+
+        foreach (Transform child in transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        resolution += 100;
+        SetupCubes();
     }
 }

@@ -7,6 +7,8 @@ public class NucleonSpawner : MonoBehaviour
     public float spawnDistance;
     public Nucleon[] nucleonPrefabs;
 
+    public int spawns = 0;
+
     float timeSinceLastSpawn;
 
     void FixedUpdate()
@@ -15,7 +17,10 @@ public class NucleonSpawner : MonoBehaviour
         if (timeSinceLastSpawn >= timeBetweenSpawns)
         {
             timeSinceLastSpawn -= timeBetweenSpawns;
-            SpawnNucleon();
+            for (int i = 0; i <= spawns; i++)
+            {
+                SpawnNucleon();
+            }
         }
     }
 
@@ -24,5 +29,10 @@ public class NucleonSpawner : MonoBehaviour
         Nucleon prefab = nucleonPrefabs[Random.Range(0, nucleonPrefabs.Length)];
         Nucleon spawn = Instantiate<Nucleon>(prefab);
         spawn.transform.localPosition = Random.onUnitSphere * spawnDistance;
+    }
+
+    public void IncreaseDifficulty()
+    {
+        spawns += Random.Range(5, 10);
     }
 }

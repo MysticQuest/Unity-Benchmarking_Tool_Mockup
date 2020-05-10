@@ -14,6 +14,7 @@ public class Fractal : MonoBehaviour
     public float maxRotationSpeed;
     private float rotationSpeed;
     public float maxTwist;
+    private int tmpDepth = 5;
 
     private Material[,] materials;
 
@@ -36,6 +37,11 @@ public class Fractal : MonoBehaviour
     };
 
     private void Start()
+    {
+        Create();
+    }
+
+    private void Create()
     {
         rotationSpeed = Random.Range(-maxRotationSpeed, maxRotationSpeed);
         transform.Rotate(Random.Range(-maxTwist, maxTwist), 0f, 0f);
@@ -112,6 +118,22 @@ public class Fractal : MonoBehaviour
         transform.localRotation = childOrientations[childIndex];
     }
 
+    public void IncreaseDifficulty()
+    {
+        foreach (Transform child in transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+        Destroy(GetComponent<MeshRenderer>());
+        Destroy(GetComponent<MeshFilter>());
+        StartCoroutine(StartCreating(tmpDepth));
+        maxDepth++;
+    }
 
-
+    private IEnumerator StartCreating(int tmpDepth)
+    {
+        yield return new WaitForSeconds(.5f);
+        InitializeMaterials();
+        Create();
+    }
 }
